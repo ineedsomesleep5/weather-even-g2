@@ -54,10 +54,10 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function formatTime(isoString: string): string {
   return new Date(isoString).toLocaleTimeString([], {
-    hour: '2-digit',
+    hour: 'numeric',
     minute: '2-digit',
-    hour12: false,
-  })
+    hour12: true,
+  }).toLowerCase()
 }
 
 type OpenMeteoForecast = {
@@ -106,6 +106,9 @@ export async function fetchWeather(city: City): Promise<WeatherData> {
       'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,uv_index_max,sunshine_duration,sunrise,sunset',
     timezone: 'auto',
     forecast_days: '7',
+    temperature_unit: 'fahrenheit',
+    wind_speed_unit: 'mph',
+    precipitation_unit: 'inch',
   })
 
   const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`)

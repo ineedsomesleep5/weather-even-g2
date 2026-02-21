@@ -180,7 +180,7 @@ function nowLabels(): string {
 function nowValues(w: WeatherData): string {
   return [
     `${w.feelsLike}\u00B0`,
-    `${w.windSpeed} km/h ${windLabel(w.windDirection)}`,
+    `${w.windSpeed} mph ${windLabel(w.windDirection)}`,
     `${w.humidity}%`,
     `${w.pressure} hPa`,
     '',
@@ -318,7 +318,7 @@ async function showRainScreen(w: WeatherData): Promise<void> {
       new TextContainerProperty({
         containerID: 1,
         containerName: 'header',
-        content: `Precipitation \u00B7 ${Math.round(totalMm * 10) / 10} mm next 12h`,
+        content: `Precipitation \u00B7 ${Math.round(totalMm * 10) / 10} in next 12h`,
         xPosition: 0,
         yPosition: 0,
         width: DISPLAY_WIDTH,
@@ -379,7 +379,7 @@ async function showWindScreen(w: WeatherData): Promise<void> {
       new TextContainerProperty({
         containerID: 1,
         containerName: 'header',
-        content: `Wind \u00B7 ${w.windSpeed} km/h ${windLabel(w.windDirection)}`,
+        content: `Wind \u00B7 ${w.windSpeed} mph ${windLabel(w.windDirection)}`,
         xPosition: 0,
         yPosition: 0,
         width: DISPLAY_WIDTH,
