@@ -48,14 +48,31 @@ function CitySearch() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {current && (
+      {current ? (
         <Text variant="body-2" style={{ color: 'var(--color-tc-2)' }}>
-          Current: {current.name}, {current.country}
+          Saved: {current.name}, {current.country}
+        </Text>
+      ) : (
+        <Text variant="body-2" style={{ color: 'var(--color-tc-2)' }}>
+          Using Device Location
         </Text>
       )}
+
+      <Button
+        variant="default"
+        style={{ width: '100%' }}
+        onClick={() => {
+          localStorage.removeItem('weather:city')
+          setCurrent(null)
+          void refreshWeather()
+        }}
+      >
+        Use Current Location
+      </Button>
+
       <div>
         <Text as="label" variant="subtitle" style={{ display: 'block', marginBottom: '4px' }}>
-          Search city
+          Or search city
         </Text>
         <Input
           value={query}

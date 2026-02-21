@@ -168,3 +168,51 @@ export async function fetchWeather(city: City): Promise<WeatherData> {
     daily: dailyPoints,
   }
 }
+
+export async function fetchLocalWeather(): Promise<WeatherData> {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error('Geolocation is not supported by your browser.'))
+      return
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          // Optional: Attempt reverse geocoding to get a real city name
+          let cityName = 'Current Location';
+          try {
+            // Open-Meteo reverse geocoding equivalent (search by coordinate not fully supported, but we can try)
+            // Using bigdatacloud for simple free reverse IP/coord geocoding
+            const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+            if (geoRes.ok) {
+              const geoData = await geoRes.json();
+              cityName = geoData.city || geoData.locality || cityName;
+            }
+          } catch (e) {
+            console.warn('Reverse geocode failed, using default name', e);
+          }
+
+          const localCity: City = {
+            name: cityName,
+            country: '',
+            latitude: lat,
+            longitude: lon,
+          }
+
+          const weather = await fetchWeather(localCity)
+          resolve(weather)
+        } catch (err) {
+          reject(err)
+        }
+      },
+      (error) => {
+        reject(new Error(`Geolocation failed: ${error.message}`))
+      },
+      { timeout: 10000 }
+    )
+  })
+}
