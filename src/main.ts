@@ -56,19 +56,12 @@ async function boot() {
       if (actionBtn) actionBtn.disabled = false
     }
   })
-  // Auto-connect on boot
-  if (!isConnecting) {
-    isConnecting = true
-    if (connectBtn) connectBtn.disabled = true
-    try {
-      await actions.connect()
-    } catch (error) {
-      console.error('[app-loader] auto-connect failed', error)
-      updateStatus('Connect failed')
-    } finally {
-      isConnecting = false
-      if (connectBtn) connectBtn.disabled = false
-    }
+  // Auto-connect on boot (DOM-independent)
+  try {
+    await actions.connect()
+  } catch (error) {
+    console.error('[app-loader] auto-connect failed', error)
+    updateStatus('Connect failed')
   }
 }
 
