@@ -4,7 +4,7 @@ import { state } from './state'
 import { showScreen, nextScreen, prevScreen, firstScreen } from './renderer'
 
 // Forward declaration – set by app.ts to avoid circular import
-let refreshWeatherFn: () => Promise<void> = async () => {}
+let refreshWeatherFn: () => Promise<void> = async () => { }
 
 export function setRefreshWeather(fn: () => Promise<void>): void {
   refreshWeatherFn = fn
@@ -88,8 +88,11 @@ export function onEvenHubEvent(event: EvenHubEvent): void {
       break
 
     case OsEventTypeList.DOUBLE_CLICK_EVENT:
-      firstScreen()
-      void refreshWeatherFn()
+      try {
+        window.location.assign('?app=launcher')
+      } catch (e) {
+        console.error('Exit failed', e)
+      }
       break
   }
 }
