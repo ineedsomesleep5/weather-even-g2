@@ -54,10 +54,10 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function formatTime(isoString: string): string {
   return new Date(isoString).toLocaleTimeString([], {
-    hour: 'numeric',
+    hour: '2-digit',
     minute: '2-digit',
-    hour12: true,
-  }).toLowerCase()
+    hour12: false,
+  })
 }
 
 type OpenMeteoForecast = {
